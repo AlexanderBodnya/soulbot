@@ -1,5 +1,6 @@
 import logging
 import logging.handlers
+import time
 
 
 
@@ -32,7 +33,8 @@ class LogHelper(logging.Logger):
         
     # Set log level of the logger instance
         
-    def file_handler(self, filename):
+    def file_handler(self):
+        filename = time.strftime("%Y%m%d-%H%M%S")+'_soulbot.log'
         handler = logging.FileHandler(filename)
         handler.setFormatter(self.formatter)
         return handler
@@ -60,7 +62,7 @@ log.set_level(3)
 sh = log.stream_handler()
 log.attach_handler(sh)
 log.log_message(3, '%s before you %s', 'Look', 'leap!')
-handler = log.file_handler('test.log')
+handler = log.file_handler()
 log.attach_handler(handler)
 log.log_message(0, '%s before you %s', 'Look', 'leap!')
 log.log_message(3, '%s before you %s', 'Look', 'leap!')
