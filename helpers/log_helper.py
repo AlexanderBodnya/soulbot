@@ -13,13 +13,14 @@ class LogHelper(logging.Logger):
         4: logging.DEBUG
     }
 
-    # Instance initialization function takes logger name as argument and provides instance of logger with defined format parameters
+    # Instance initialization function takes logger name as argument and provides instance of logger with defined
+    # format parameters
     def __init__(self, logger_name):
         self.logger = logging.getLogger(logger_name)
         self.formatter = logging.Formatter(
             '%(processName)s %(process)d %(levelname)s %(asctime)s %(message)s',
             datefmt='%m/%d/%Y %I:%M:%S %p'
-            )
+        )
 
     # Redefined logging.log function, which allows to take logging levels as int numbers
     def log_message(self, level, *args):
@@ -31,7 +32,7 @@ class LogHelper(logging.Logger):
 
     # Create handler to send logs to the file
     def file_handler(self):
-        filename = time.strftime("%Y%m%d-%H%M%S")+'_soulbot.log'
+        filename = time.strftime("%Y%m%d-%H%M%S") + '_soulbot.log'
         handler = logging.FileHandler(filename)
         handler.setFormatter(self.formatter)
         return handler
@@ -48,13 +49,16 @@ class LogHelper(logging.Logger):
 
 
 # some examples
-log = LogHelper('test_log')
-log.set_level(3)
-sh = log.stream_handler()
-log.attach_handler(sh)
-log.log_message(3, '%s before you %s', 'Look', 'leap!')
-handler = log.file_handler()
-log.attach_handler(handler)
-log.log_message(0, '%s before you %s', 'Look', 'leap!')
-log.log_message(3, '%s before you %s', 'Look', 'leap!')
-log.log_message(4, '%s before you %s', 'Look', 'leap!')
+if __name__ == "__main__":
+    # this means that the code inside the condition will execute if the script is running directly from Python
+    # interpreter and is not used as an imported module.
+    log = LogHelper('test_log')
+    log.set_level(3)
+    sh = log.stream_handler()
+    log.attach_handler(sh)
+    log.log_message(3, '%s before you %s', 'Look', 'leap!')
+    handler = log.file_handler()
+    log.attach_handler(handler)
+    log.log_message(0, '%s before you %s', 'Look', 'leap!')
+    log.log_message(3, '%s before you %s', 'Look', 'leap!')
+    log.log_message(4, '%s before you %s', 'Look', 'leap!')
