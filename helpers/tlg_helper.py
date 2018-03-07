@@ -58,3 +58,12 @@ class BotHelper:
     def getWebhookInfo(self):
         result = self.api_request('getWebhookInfo')
         return result
+
+    # This is API method to send messages. It requires chat_id and text of the message
+    def sendMessage(self, chat_id, text):
+        payload = {
+            'chat_id': chat_id,
+            'text': text
+        }
+        result = self.api_request('sendMessage', payload)
+        return result
