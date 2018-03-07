@@ -8,7 +8,10 @@ class BotHelper:
 
     def api_request(self, method_name, payload={}):
         url = 'https://api.telegram.org/bot' + self.token + '/' + method_name
-        req = requests.post(url, data=payload)
+        if method_name == 'setWebhook':
+            req = requests.post(url, files=payload)
+        else:
+            req = requests.post(url, data=payload)
         try:
             resp = req.json()
             return 0, resp
@@ -18,20 +21,18 @@ class BotHelper:
             return 1
 
     def setWebhook(self, url=None, cert=None, max_connections=None, allowed_updates=None, **kwargs):
-        payload = {}
+        payload = {
+            'url': (None, url)
+        }
 
-        if url is not None:
-            payload['url'] = url
         if cert is not None:
-            payload['certificate'] = open(cert, 'rb')
+            payload['certificate'] = (cert, open(cert, 'rb'))
         if max_connections is not None:
-            payload['max_connections'] = max_connections
+            payload['max_connections'] = (None, max_connections)
         if allowed_updates is not None:
-            payload['allowed_updates'] = allowed_updates
+            payload['allowed_updates'] = (None, allowed_updates)
         payload.update(kwargs)
 
-
-        print(payload)
         result = self.api_request('setWebhook', payload)
         return result
 
