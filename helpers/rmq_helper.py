@@ -19,7 +19,7 @@ def connect():
 
 
 def set_queue(channel, queue_name):
-    print('Declare queue ',  queue_name)
+    print('Declare queue ', queue_name)
     channel.queue_declare(queue=queue_name, durable=True)
 
 
@@ -32,5 +32,3 @@ def push_message(channel, queue_name, message):
                           properties=pika.BasicProperties(delivery_mode=2, )
                           )
     channel.close()
-
-

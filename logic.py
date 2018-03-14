@@ -19,5 +19,4 @@ if __name__ == '__main__':
     queue_channel.basic_consume(on_message,
                                 queue=queue,
                                 no_ack=True)
-
     queue_channel.start_consuming()
