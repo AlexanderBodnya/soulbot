@@ -24,7 +24,7 @@ def push_message():
 
 if __name__ == '__main__':
     bot.deleteWebhook()
-    result = bot.setWebhook('https://' + conf.URL + ':' + conf.PORT + '/soul_queue', conf.CERT)
+    result = bot.setWebhook('https://' + conf.URL + ':' + str(conf.PORT) + '/soul_queue', conf.CERT)
     print(result)
     print(bot.getWebhookInfo())
     channel = q_helper.connect()
