@@ -1,14 +1,23 @@
 #!/usr/bin/env python
 
 import helpers.rmq_helper as q_helper
+import configs.config as conf
+import helpers.tlg_helper as tlg
+import json
 
 
 # TODO: log it!
+bot = tlg.BotHelper(conf.TOKEN)
 
 
 def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
     # log.log_message(4, "Received %r" % body)
+    _json_message = json.loads(body)
+    text = _json_message['message']['text']
+    chat_id = _json_message['chat']['id']
+    result = bot.sendMessage(chat_id, text)
+    return result
 
 
 queue = 'bot_inbox'
