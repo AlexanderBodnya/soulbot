@@ -29,4 +29,4 @@ if __name__ == '__main__':
     print(bot.getWebhookInfo())
     channel = q_helper.connect()
     q_helper.set_queue(channel, queue)
-    app.run(host='0.0.0.0', debug=True, ssl_context=(conf.CERT, conf.KEY), port=conf.PORT)
+    app.run(host='0.0.0.0', debug=False, ssl_context=(conf.CERT, conf.KEY), port=conf.PORT)
