@@ -80,7 +80,7 @@ class Messaging(BotHelper):
         commands = {
             'start': self.start_message,
         }
-        result = commands[command]
+        result = commands[command]()
         return result
 
     def get_chat_id(self):
@@ -92,11 +92,11 @@ class Messaging(BotHelper):
         return text
 
     def get_command(self):
-        words = self.get_text().spilt()
+        words = self.get_text().split()
         if words[0] == '/start':
             return 'start'
         else:
-            return 0
+            return None
 
     def start_message(self):
         self.sendMessage(self.get_chat_id(), 'welcome message')

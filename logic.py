@@ -13,6 +13,9 @@ bot = tlg.BotHelper(conf.TOKEN)
 def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
     msg = tlg.Messaging(conf.TOKEN, body)
+    if msg.get_command() is not None:
+        msg.command_execute(msg.get_command())
+
     result = bot.sendMessage(msg.get_chat_id(), msg.get_text())
     return result
 

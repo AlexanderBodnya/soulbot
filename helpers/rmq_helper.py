@@ -31,4 +31,4 @@ def push_message(channel, queue_name, message):
                           # make message persistent
                           properties=pika.BasicProperties(delivery_mode=2, )
                           )
-    channel.close()
+#    channel.close()
