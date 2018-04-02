@@ -12,11 +12,8 @@ bot = tlg.BotHelper(conf.TOKEN)
 
 def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
-    # log.log_message(4, "Received %r" % body)
-    _json_message = json.loads(body.decode('utf-8'))
-    text = _json_message['message']['text']
-    chat_id = _json_message['message']['chat']['id']
-    result = bot.sendMessage(chat_id, text)
+    msg = tlg.Messaging(conf.TOKEN, body)
+    result = bot.sendMessage(msg.get_chat_id(), msg.get_text())
     return result
 
 

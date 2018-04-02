@@ -1,4 +1,5 @@
 import requests
+import json
 
 
 class BotHelper:
@@ -67,3 +68,37 @@ class BotHelper:
         }
         result = self.api_request('sendMessage', payload)
         return result
+
+
+class Messaging(BotHelper):
+
+    def __init__(self, token, message):
+        super(Messaging, self).__init__(self, token)
+        self._json_message = json.loads(message.decode('utf-8'))
+
+    def command_execute(self, command):
+        commands = {
+            'start': self.start_message,
+        }
+        result = commands[command]
+        return result
+
+    def get_chat_id(self):
+        chat_id = self._json_message['message']['chat']['id']
+        return chat_id
+
+    def get_text(self):
+        text = self._json_message['message']['text']
+        return text
+
+    def get_command(self):
+        words = self.get_text().spilt()
+        if words[0] == '/start':
+            return 'start'
+        else:
+            return 0
+
+    def start_message(self):
+        self.sendMessage(self.get_chat_id(), 'welcome message')
+
+
