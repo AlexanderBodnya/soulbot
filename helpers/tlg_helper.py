@@ -73,12 +73,13 @@ class BotHelper:
 class Messaging(BotHelper):
 
     def __init__(self, token, message):
-        super(Messaging, self).__init__(self, token)
+        super(Messaging, self).__init__(token)
         self._json_message = json.loads(message.decode('utf-8'))
 
     def command_execute(self, command):
         commands = {
             'start': self.start_message,
+            'get_id': self.send_chat_id,
         }
         result = commands[command]()
         return result
@@ -95,10 +96,16 @@ class Messaging(BotHelper):
         words = self.get_text().split()
         if words[0] == '/start':
             return 'start'
+        elif words[0] == '/get_id':
+            return 'get_id'
         else:
             return None
 
     def start_message(self):
         self.sendMessage(self.get_chat_id(), 'welcome message')
+
+    def send_chat_id(self):
+        self.sendMessage(self.get_chat_id(), self.get_chat_id())
+
 
 
