@@ -22,8 +22,7 @@ def init_db(cur):
     cur.execute("CREATE UNIQUE INDEX IF NOT EXISTS `IX_pid` ON `users` ( `pair_id` )")
 
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS history (id INTEGER AUTOINCREMENT,
-                                               from_user_id INTEGER,
+        '''CREATE TABLE IF NOT EXISTS history (from_user_id INTEGER,
                                                to_user_id INTEGER,
                                                pair_id INTEGER,
                                                message TEXT,
