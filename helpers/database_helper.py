@@ -2,7 +2,7 @@ import sqlite3
 
 def connect(database):
     db = sqlite3.connect(database)
-    cur = database.cursor()
+    cur = db.cursor()
     init_db(cur)
     database.commit()
     return cur, db
