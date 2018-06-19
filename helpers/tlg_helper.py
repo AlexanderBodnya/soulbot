@@ -105,14 +105,8 @@ class Messaging(BotHelper):
 
     def get_command(self):
         words = self.get_text().split()
-        if words[0] == '/start':
-            return 'start'
-        elif words[0] == '/get_id':
-            return 'get_id'
-        elif words[0] == '/get_chat_id':
-            return 'get_chat_id'
-        elif words[0] == '/get_name':
-            return 'get_name'
+        if words[0][0] == '/':
+            return words[1:]
         else:
             return None
 
