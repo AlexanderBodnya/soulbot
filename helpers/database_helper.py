@@ -4,7 +4,7 @@ def connect(database):
     db = sqlite3.connect(database)
     cur = db.cursor()
     init_db(cur)
-    database.commit()
+    db.commit()
     return cur, db
 
 def init_db(cur):
