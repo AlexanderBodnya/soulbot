@@ -10,6 +10,7 @@ def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
     msg = tlg.Messaging(conf.TOKEN, body)
     if msg.get_command() is not None:
+        print(msg.get_command())
         msg.command_execute(msg.get_command())
         return 0
     result = bot.sendMessage(msg._chat_id, msg.get_text())
