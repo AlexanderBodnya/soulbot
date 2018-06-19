@@ -12,7 +12,7 @@ def on_message(ch, method, properties, body):
     if msg.get_command() is not None:
         msg.command_execute(msg.get_command())
         return 0
-    result = bot.sendMessage(msg.get_chat_id(), msg.get_text())
+    result = bot.sendMessage(msg._chat_id, msg.get_text())
     return result
 
 
