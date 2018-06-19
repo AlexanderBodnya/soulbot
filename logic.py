@@ -11,11 +11,13 @@ cur, database = db.connect(conf.DATABASE)
 def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
     msg = tlg.Messaging(conf.TOKEN, body)
+    db.add_user(cur, msg.get_user_id(), msg.get_chat_id(), msg.get_name())
     if msg.get_command() is not None:
         msg.command_execute(msg.get_command())
+        db.store_message(cur, msg.get_user_id(), msg.get_text())
         return 0
     result = bot.sendMessage(msg._chat_id, msg.get_text())
-    db.store_message(cur, msg.get_user_id(), msg.get_text())
+    db.store_message(cur, msg.get_user_id(), msg.get_name(), msg.get_text())
     database.commit()
     return result
 
