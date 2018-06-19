@@ -109,6 +109,10 @@ class Messaging(BotHelper):
             return 'start'
         elif words[0] == '/get_id':
             return 'get_id'
+        elif words[0] == '/get_chat_id':
+            return 'get_chat_id'
+        elif words[0] == '/get_name':
+            return 'get_name'
         else:
             return None
 
