@@ -84,7 +84,7 @@ class Messaging(BotHelper):
             'get_name': self.return_name,
             'get_id': self.return_user_id
         }
-        result = commands[command]()
+        result = commands[command,]()
         return result
     # Deprecated, moved to instance initialization
     # def get_chat_id(self):
