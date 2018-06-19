@@ -75,18 +75,29 @@ class Messaging(BotHelper):
     def __init__(self, token, message):
         super(Messaging, self).__init__(token)
         self._json_message = json.loads(message.decode('utf-8'))
+        self._chat_id = self._json_message['message']['chat']['id']
 
     def command_execute(self, command):
         commands = {
             'start': self.start_message,
-            'get_id': self.send_chat_id,
+            'get_chat_id': self.return_chat_id,
+            'get_name': self.return_name,
+            'get_id': self.return_user_id
         }
         result = commands[command]()
         return result
+    # Deprecated, moved to instance initialization
+    # def get_chat_id(self):
+    #     chat_id = self._json_message['message']['chat']['id']
+    #     return chat_id
 
-    def get_chat_id(self):
-        chat_id = self._json_message['message']['chat']['id']
-        return chat_id
+    def get_name(self):
+        name = self._json_message['message']['from']['username']
+        return name
+
+    def get_user_id(self):
+        id = self._json_message['message']['from']['id']
+        return id
 
     def get_text(self):
         text = self._json_message['message']['text']
@@ -102,10 +113,13 @@ class Messaging(BotHelper):
             return None
 
     def start_message(self):
-        self.sendMessage(self.get_chat_id(), 'welcome message')
+        self.sendMessage(self._chat_id, 'welcome message')
 
-    def send_chat_id(self):
-        self.sendMessage(self.get_chat_id(), self.get_chat_id())
+    def return_chat_id(self):
+        self.sendMessage(self._chat_id, self._chat_id)
 
+    def return_name(self):
+        self.sendMessage(self._chat_id, self.get_name)
 
-
+    def return_user_id(self):
+        self.sendMessage(self._chat_id, self.get_user_id)
