@@ -1,10 +1,11 @@
 import sqlite3
 
 def connect(database):
-    database = sqlite3.connect(conf.DATABASE)
+    db = sqlite3.connect(database)
     cur = database.cursor()
     init_db(cur)
-    return cur, database
+    database.commit()
+    return cur, db
 
 def init_db(cur):
     cur.execute(
