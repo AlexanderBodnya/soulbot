@@ -104,9 +104,9 @@ class Messaging(BotHelper):
         return text
 
     def get_command(self):
-        words = self.get_text()
-        if words[0] == '/':
-            return words[1:]
+        words = self.get_text().split()
+        if words[0][0] == '/':
+            return words[0][1:]
         else:
             return None
 
@@ -117,7 +117,7 @@ class Messaging(BotHelper):
         self.sendMessage(self._chat_id, self._chat_id)
 
     def return_name(self):
-        self.sendMessage(self._chat_id, self.get_name)
+        self.sendMessage(self._chat_id, self.get_name())
 
     def return_user_id(self):
-        self.sendMessage(self._chat_id, self.get_user_id)
+        self.sendMessage(self._chat_id, self.get_user_id())
