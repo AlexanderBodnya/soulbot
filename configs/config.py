@@ -1,0 +1,8 @@
+TOKEN = ''
+URL = ''
+PORT = ''
+LOG_LEVEL = ''
+CERT = ''
+KEY = ''
+EXCHANGE = ''
+QUEUE_NAME = ''
