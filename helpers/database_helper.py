@@ -26,6 +26,8 @@ def init_db(cur):
                                                to_user_id INTEGER,
                                                pair_id INTEGER,
                                                message TEXT,
+                                               from_nickname TEXT,
+                                               to_nickname TEXT,
                                                created_at TIMESTAMP,
                                                FOREIGN KEY (from_user_id) REFERENCES users(user_id),
                                                FOREIGN KEY (to_user_id) REFERENCES users(user_id),
@@ -35,8 +37,8 @@ def init_db(cur):
     cur.execute("CREATE INDEX IF NOT EXISTS `IX_pid` ON `history` ( `pair_id` )")
 
 
-def store_message(cur, from_user_id, nickname, message):
-    cur.execute('INSERT INTO history (from_user_id, nickname, message) VALUES(?,?,?)',(from_user_id, nickname, message))
+def store_message(cur, from_user_id, from_nickname, message):
+    cur.execute('INSERT INTO history (from_user_id, from_nickname, message) VALUES(?,?,?)',(from_user_id, from_nickname, message))
 
 def add_user(cur, user_id, chat_id, nickname):
     cur.execute('INSERT OR IGNORE INTO users (user_id, chat_id, nickname) VALUES(?,?,?)',(user_id, chat_id, nickname))
