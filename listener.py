@@ -8,7 +8,6 @@ app = flask.Flask(__name__)
 bot = tlg.BotHelper(conf.TOKEN)
 
 global channel
-# TODO: move queue name to config
 queue = 'bot_inbox'
 
 
