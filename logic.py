@@ -1,31 +1,28 @@
-#!/usr/bin/env python
-
 import helpers.rmq_helper as q_helper
 import configs.config as conf
 import helpers.tlg_helper as tlg
-import json
+import helpers.database_helper as db
 
 
 # TODO: log it!
 bot = tlg.BotHelper(conf.TOKEN)
-
+cur, database = db.connect(conf.DATABASE)
 
 def on_message(ch, method, properties, body):
     print(" [x] Received %r" % body)
-    # log.log_message(4, "Received %r" % body)
-    _json_message = json.loads(body.decode('utf-8'))
-    text = _json_message['message']['text']
-    chat_id = _json_message['message']['chat']['id']
-    result = bot.sendMessage(chat_id, text)
+    msg = tlg.Messaging(conf.TOKEN, body, cur = cur, database = database)
+    db.add_user(cur, msg.get_user_id(), msg._chat_id, msg.get_name())
+    if msg.get_command() is not None:
+        msg.command_execute(msg.get_command())
+        db.store_message(cur, msg.get_user_id(), msg.get_name(), msg.get_text())
+        return 0
+    result = bot.sendMessage(msg._chat_id, msg.get_text())
+    db.store_message(cur, msg.get_user_id(), msg.get_name(), msg.get_text())
+    database.commit()
     return result
 
 
-queue = 'bot_inbox'
-
 if __name__ == '__main__':
-    queue_channel = q_helper.start_queue(queue)
-    # TODO: implement message acknowledgment
-    queue_channel.basic_consume(on_message,
-                                queue=queue,
-                                no_ack=True)
-    queue_channel.start_consuming()
+    queue_handler = q_helper.QueueHelper(conf.QUEUE_NAME)
+    queue_handler.consume_message(on_message)
+    queue_handler._channel.start_consuming()

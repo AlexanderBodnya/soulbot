@@ -1,4 +1,6 @@
 import requests
+import json
+import helpers.database_helper
 
 
 class BotHelper:
@@ -67,3 +69,65 @@ class BotHelper:
         }
         result = self.api_request('sendMessage', payload)
         return result
+
+
+class Messaging(BotHelper):
+
+    def __init__(self, token, message, **kwargs):
+        super(Messaging, self).__init__(token)
+        self.message = message
+        self._json_message = json.loads(message.decode('utf-8'))
+        self._chat_id = self._json_message['message']['chat']['id']
+        self.cur = kwargs.get('cur', None)
+        self.database = kwargs.get('database', None)
+
+    def command_execute(self, command):
+        commands = {
+            'start': self.start_message,
+            'get_chat_id': self.return_chat_id,
+            'get_name': self.return_name,
+            'get_id': self.return_user_id,
+            'get_users': self.get_users
+        }
+        result = commands[command]()
+        return result
+    # Deprecated, moved to instance initialization
+    # def get_chat_id(self):
+    #     chat_id = self._json_message['message']['chat']['id']
+    #     return chat_id
+
+    def get_name(self):
+        name = self._json_message['message']['from']['username']
+        return name
+
+    def get_user_id(self):
+        id = self._json_message['message']['from']['id']
+        return id
+
+    def get_text(self):
+        text = self._json_message['message']['text']
+        return text
+
+    def get_command(self):
+        words = self.get_text().split()
+        if words[0][0] == '/':
+            return words[0][1:]
+        else:
+            return None
+
+    def start_message(self):
+        self.sendMessage(self._chat_id, 'welcome message')
+
+    def return_chat_id(self):
+        self.sendMessage(self._chat_id, self._chat_id)
+
+    def return_name(self):
+        self.sendMessage(self._chat_id, self.get_name())
+
+    def return_user_id(self):
+        self.sendMessage(self._chat_id, self.get_user_id())
+
+    def get_users(self):
+        self.cur.execute('SELECT * FROM users')
+        results = self.cur.fetchall()
+        self.sendMessage(self._chat_id, results)
