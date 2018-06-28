@@ -1,6 +1,6 @@
 import requests
 import json
-import database_helper
+import helpers.database_helper
 
 
 class BotHelper:
